@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import { Scissors, CheckCircle, Star, MapPin, Clock, Phone } from "lucide-react";
+import { CheckCircle, Star, MapPin, Clock, Phone, Scissors } from "lucide-react";
+import logo1fundo from "../assets/logo1fundo.png";
 
 export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section style={styles.hero}>
-        <div className="container" style={{ textAlign: "center", color: "#ffffff" }}>
-          <Scissors size={64} color="var(--red-accent)" style={{ marginBottom: "24px" }} />
-          <h1 style={{ color: "#ffffff", fontSize: "3rem", marginBottom: "16px" }}>Bem-vindo à Barbearia Atlas</h1>
+      <section id="inicio" style={styles.hero}>
+        <div className="container" style={{ textAlign: "center", color: "#ffffff", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <img src={logo1fundo} alt="Logo Atlas" style={{ height: "120px", marginBottom: "24px", objectFit: "contain" }} />
+          <h1 style={{ color: "#ffffff", fontSize: "3.5rem", marginBottom: "16px" }}>Barbearia Atlas</h1>
           <p style={{ fontSize: "1.2rem", maxWidth: "600px", margin: "0 auto", marginBottom: "32px", color: "#dddddd" }}>
             Tradição, estilo e excelência no seu atendimento. Descubra a melhor experiência em barbearia clássica e moderna.
           </p>
@@ -22,42 +23,42 @@ export default function Home() {
 
       {/* Sobre Nós */}
       <section id="sobre" className="container" style={{ padding: "80px 20px" }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "40px", alignItems: "center" }}>
-          <div style={{ flex: "1 1 400px" }}>
-            <h2 style={{ fontSize: "2.5rem", marginBottom: "24px", color: "var(--blue-dark)" }} className="text-brand">Sobre Nós</h2>
-            <p style={{ fontSize: "1.1rem", marginBottom: "16px", color: "var(--text-secondary)" }}>
-              Fundada em 2026, a Barbearia Atlas nasceu com o propósito de resgatar a autêntica experiência de barbearia. Não somos apenas um salão de cortes, somos um refúgio para o homem moderno que valoriza um bom papo, estilo refinado e um momento de cuidado pessoal.
-            </p>
-            <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
-              Nossos profissionais são altamente qualificados nas técnicas mais tradicionais e nas tendências atuais, garantindo que você saia com o visual impecável.
-            </p>
-          </div>
-          <div style={{ flex: "1 1 400px", backgroundColor: "var(--border-color)", height: "300px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)" }}>
-            [Imagem da Barbearia]
-          </div>
+        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "2.5rem", marginBottom: "24px", color: "var(--blue-dark)" }} className="text-brand">Sobre Nós</h2>
+          <p style={{ fontSize: "1.2rem", marginBottom: "24px", color: "var(--text-secondary)" }}>
+            Fundada em 2026, a Barbearia Atlas nasceu com o propósito de resgatar a autêntica experiência de barbearia. Não somos apenas um salão de cortes, somos um refúgio para o homem moderno que valoriza um bom papo, estilo refinado e um momento de cuidado pessoal.
+          </p>
+          <p style={{ fontSize: "1.2rem", color: "var(--text-secondary)" }}>
+            Nossos profissionais são altamente qualificados nas técnicas mais tradicionais e nas tendências atuais, garantindo que você saia com o visual impecável.
+          </p>
         </div>
       </section>
 
       {/* Por que escolher */}
       <section style={{ backgroundColor: "var(--blue-dark)", padding: "80px 0", color: "#ffffff" }}>
         <div className="container">
-          <h2 style={{ textAlign: "center", color: "#ffffff", marginBottom: "48px", fontSize: "2.5rem" }}>Por que escolher a Atlas?</h2>
+          <h2 style={{ textAlign: "center", color: "#ffffff", marginBottom: "48px", fontSize: "2.5rem" }}>Por que escolher a Barbearia Atlas?</h2>
           
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "32px" }}>
-            <div style={styles.featureBox}>
-              <CheckCircle size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Qualidade Impecável</h3>
-              <p style={{ color: "#cccccc" }}>Utilizamos os melhores produtos do mercado e técnicas avançadas para garantir um resultado perfeito.</p>
-            </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "32px" }}>
             <div style={styles.featureBox}>
               <Star size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Profissionais Experientes</h3>
-              <p style={{ color: "#cccccc" }}>Nossa equipe é formada por especialistas apaixonados pelo que fazem, sempre atualizados com as tendências.</p>
+              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Atendimento Premium</h3>
+              <p style={{ color: "#cccccc" }}>Nosso foco absoluto é a sua satisfação. Desde o café de boas-vindas até o último ajuste do corte.</p>
             </div>
             <div style={styles.featureBox}>
               <Scissors size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Ambiente Premium</h3>
-              <p style={{ color: "#cccccc" }}>Um espaço climatizado, com música boa, café expresso e cerveja gelada esperando por você.</p>
+              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Profissionais Qualificados</h3>
+              <p style={{ color: "#cccccc" }}>Nossa equipe é formada por especialistas que dominam visagismo e as melhores técnicas de barber shop.</p>
+            </div>
+            <div style={styles.featureBox}>
+              <CheckCircle size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Ambiente Confortável</h3>
+              <p style={{ color: "#cccccc" }}>Um espaço climatizado, com música boa, TV e cerveja gelada esperando por você.</p>
+            </div>
+            <div style={styles.featureBox}>
+              <Clock size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Tradição e Estilo</h3>
+              <p style={{ color: "#cccccc" }}>Unimos a cultura clássica da barbearia raiz com as inovações estéticas contemporâneas.</p>
             </div>
           </div>
         </div>
@@ -74,27 +75,36 @@ export default function Home() {
               <MapPin color="var(--red-accent)" />
               <div>
                 <strong>Endereço</strong>
-                <p style={{ color: "var(--text-secondary)" }}>Rua das Flores, 123 - Centro<br/>São Paulo, SP - 01234-567</p>
+                <p style={{ color: "var(--text-secondary)" }}>Centro<br/>Acopiara - CE</p>
               </div>
             </div>
             <div style={styles.contactItem}>
               <Phone color="var(--red-accent)" />
               <div>
                 <strong>Telefone / WhatsApp</strong>
-                <p style={{ color: "var(--text-secondary)" }}>(11) 99999-9999</p>
+                <p style={{ color: "var(--text-secondary)" }}>(88) 99999-9999</p>
               </div>
             </div>
             <div style={styles.contactItem}>
               <Clock color="var(--red-accent)" />
               <div>
                 <strong>Horário de Funcionamento</strong>
-                <p style={{ color: "var(--text-secondary)" }}>Segunda a Sábado: 09h às 20h<br/>Domingo: Fechado</p>
+                <p style={{ color: "var(--text-secondary)" }}>Segunda a Sábado: 08h às 20h<br/>Domingo: Fechado</p>
               </div>
             </div>
           </Card>
           
-          <div style={{ backgroundColor: "var(--border-color)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", minHeight: "300px" }}>
-            [Iframe Google Maps simulado]
+          <div style={{ backgroundColor: "var(--border-color)", borderRadius: "8px", overflow: "hidden", minHeight: "300px" }}>
+             <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.787680267798!2d-39.4632!3d-6.0963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a2f913d31b26ef%3A0xcafdbd443c68f184!2sAcopiara%2C%20CE!5e0!3m2!1spt-BR!2sbr!4v1718220000000!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Google Maps Acopiara"
+             ></iframe>
           </div>
         </div>
       </section>
@@ -105,7 +115,7 @@ export default function Home() {
 const styles = {
   hero: {
     backgroundColor: "var(--brown-dark)",
-    backgroundImage: "linear-gradient(to bottom, rgba(43, 20, 7, 0.8), rgba(0, 61, 143, 0.8))",
+    backgroundImage: "linear-gradient(to bottom, rgba(43, 20, 7, 0.85), rgba(0, 61, 143, 0.95))",
     padding: "120px 20px",
   },
   featureBox: {

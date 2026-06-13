@@ -1,24 +1,38 @@
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { Save } from "lucide-react";
+import { getStorageData, setStorageData } from "../services/storage";
 
 export default function BarberScheduleConfig() {
-  const days = [
-    { name: "Segunda-feira", active: true, start: "09:00", end: "20:00" },
-    { name: "Terça-feira", active: true, start: "09:00", end: "20:00" },
-    { name: "Quarta-feira", active: true, start: "09:00", end: "20:00" },
-    { name: "Quinta-feira", active: true, start: "09:00", end: "20:00" },
-    { name: "Sexta-feira", active: true, start: "09:00", end: "21:00" },
-    { name: "Sábado", active: true, start: "08:00", end: "19:00" },
-    { name: "Domingo", active: false, start: "", end: "" },
-  ];
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    const config = getStorageData("atlas_config");
+    if (config && config.days) {
+      setDays(config.days);
+    }
+  }, []);
+
+  const handleChange = (index, field, value) => {
+    const newDays = [...days];
+    newDays[index][field] = value;
+    setDays(newDays);
+  };
+
+  const handleSave = () => {
+    const config = getStorageData("atlas_config") || {};
+    config.days = days;
+    setStorageData("atlas_config", config);
+    alert("Horários atualizados com sucesso!");
+  };
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
         <h1 style={{ margin: 0 }}>Horários de Funcionamento</h1>
-        <Button><Save size={18} /> Salvar Configurações</Button>
+        <Button onClick={handleSave}><Save size={18} /> Salvar Configurações</Button>
       </div>
 
       <Card>
@@ -31,14 +45,31 @@ export default function BarberScheduleConfig() {
               opacity: day.active ? 1 : 0.6
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "16px", width: "200px" }}>
-                <input type="checkbox" defaultChecked={day.active} style={{ width: "20px", height: "20px" }} />
+                <input 
+                  type="checkbox" 
+                  checked={day.active} 
+                  onChange={(e) => handleChange(idx, "active", e.target.checked)}
+                  style={{ width: "20px", height: "20px" }} 
+                />
                 <span style={{ fontWeight: "bold" }}>{day.name}</span>
               </div>
               
               <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, maxWidth: "400px" }}>
-                <Input type="time" defaultValue={day.start} disabled={!day.active} style={{ marginBottom: 0 }} />
+                <Input 
+                  type="time" 
+                  value={day.start} 
+                  onChange={(e) => handleChange(idx, "start", e.target.value)}
+                  disabled={!day.active} 
+                  style={{ marginBottom: 0 }} 
+                />
                 <span>até</span>
-                <Input type="time" defaultValue={day.end} disabled={!day.active} style={{ marginBottom: 0 }} />
+                <Input 
+                  type="time" 
+                  value={day.end} 
+                  onChange={(e) => handleChange(idx, "end", e.target.value)}
+                  disabled={!day.active} 
+                  style={{ marginBottom: 0 }} 
+                />
               </div>
               
               <div style={{ width: "100px", textAlign: "right" }}>

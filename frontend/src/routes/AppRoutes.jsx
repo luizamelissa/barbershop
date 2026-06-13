@@ -5,7 +5,6 @@ import { PublicLayout, ClientLayout, AdminLayout } from "../layouts/Layouts";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import AdminLogin from "../pages/AdminLogin";
 
 // Páginas do Cliente
 import ClientDashboard from "../pages/ClientDashboard";
@@ -31,7 +30,6 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
       </Route>
 
       {/* Rotas Privadas - Cliente */}

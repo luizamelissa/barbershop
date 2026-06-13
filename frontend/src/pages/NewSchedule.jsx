@@ -1,24 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { CheckCircle, CreditCard, Star } from "lucide-react";
+import { CheckCircle, CreditCard, Banknote, QrCode } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { getStorageData, setStorageData } from "../services/storage";
 
 export default function NewSchedule() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  
   const [step, setStep] = useState(1);
+  const [services, setServices] = useState([]);
+  
   const [formData, setFormData] = useState({
-    service: "",
+    serviceId: "",
     barber: "",
     date: "",
     time: "",
-    rating: 0
+    paymentMethod: ""
   });
 
+  useEffect(() => {
+    const allServices = getStorageData("atlas_services") || [];
+    setServices(allServices.filter(s => s.active));
+  }, []);
+
+  const selectedService = services.find(s => s.id.toString() === formData.serviceId);
+
   const handleNext = () => setStep(step + 1);
+  
   const handleFinish = () => {
-    alert("Agendamento Concluído com sucesso!");
+    // Save Appointment
+    const newApp = {
+      id: Date.now().toString(),
+      clientId: user.id,
+      clientName: user.firstName + " " + (user.lastName || ""),
+      serviceId: formData.serviceId,
+      serviceName: selectedService.name,
+      price: selectedService.price,
+      barber: formData.barber,
+      date: formData.date,
+      time: formData.time,
+      status: "Confirmado"
+    };
+
+    const apps = getStorageData("atlas_appointments") || [];
+    setStorageData("atlas_appointments", [...apps, newApp]);
+
+    // Save Transaction
+    const newTx = {
+      id: Date.now().toString(),
+      desc: `${selectedService.name} - ${user.firstName}`,
+      type: "entrada",
+      value: `R$ ${selectedService.price}`,
+      date: new Date().toLocaleDateString("pt-BR")
+    };
+    const txs = getStorageData("atlas_transactions") || [];
+    setStorageData("atlas_transactions", [newTx, ...txs]);
+
+    alert("Agendamento e Pagamento concluídos com sucesso!");
     navigate("/client/dashboard");
   };
 
@@ -47,12 +89,15 @@ export default function NewSchedule() {
         {step === 1 && (
           <div>
             <h3 className="mb-4">Serviço e Profissional</h3>
-            <Input 
-              label="Qual serviço deseja?" 
-              placeholder="Ex: Corte Clássico" 
-              value={formData.service}
-              onChange={(e) => setFormData({...formData, service: e.target.value})}
-            />
+            <div className="input-group mt-2">
+              <label>Escolha o Serviço</label>
+              <select value={formData.serviceId} onChange={(e) => setFormData({...formData, serviceId: e.target.value})}>
+                <option value="" disabled>Selecione...</option>
+                {services.map(s => (
+                  <option key={s.id} value={s.id}>{s.name} - R$ {s.price}</option>
+                ))}
+              </select>
+            </div>
             <div className="input-group mt-2">
               <label>Escolha o Barbeiro</label>
               <select value={formData.barber} onChange={(e) => setFormData({...formData, barber: e.target.value})}>
@@ -62,7 +107,7 @@ export default function NewSchedule() {
                 <option value="Fernando Silva">Fernando Silva</option>
               </select>
             </div>
-            <Button onClick={handleNext} style={{ width: "100%", marginTop: "16px" }} disabled={!formData.service || !formData.barber}>
+            <Button onClick={handleNext} style={{ width: "100%", marginTop: "16px" }} disabled={!formData.serviceId || !formData.barber}>
               Próximo
             </Button>
           </div>
@@ -98,15 +143,54 @@ export default function NewSchedule() {
 
         {step === 3 && (
           <div style={{ textAlign: "center" }}>
-            <h3 className="mb-4">Pagamento (Simulação)</h3>
-            <div style={{ padding: "24px", backgroundColor: "var(--bg-primary)", borderRadius: "8px", marginBottom: "24px" }}>
-              <CreditCard size={48} color="var(--blue-dark)" style={{ marginBottom: "16px" }} />
-              <p>Total a pagar: <strong style={{ color: "var(--red-accent)", fontSize: "1.2rem" }}>R$ 45,00</strong></p>
-              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>O pagamento real seria processado aqui.</p>
+            <h3 className="mb-4">Pagamento</h3>
+            
+            <div style={{ padding: "16px", backgroundColor: "var(--bg-primary)", borderRadius: "8px", marginBottom: "24px" }}>
+              <p style={{ fontSize: "1.1rem" }}>Total a pagar: <strong style={{ color: "var(--red-accent)", fontSize: "1.4rem" }}>R$ {selectedService?.price}</strong></p>
             </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "24px" }}>
+              <button 
+                onClick={() => setFormData({...formData, paymentMethod: "pix"})}
+                style={{ 
+                  padding: "16px", borderRadius: "8px", border: `2px solid ${formData.paymentMethod === 'pix' ? 'var(--blue-dark)' : 'var(--border-color)'}`,
+                  backgroundColor: formData.paymentMethod === 'pix' ? 'rgba(0, 61, 143, 0.1)' : 'var(--bg-primary)',
+                  color: "var(--text-primary)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px"
+                }}>
+                <QrCode size={24} /> PIX
+              </button>
+              <button 
+                onClick={() => setFormData({...formData, paymentMethod: "debito"})}
+                style={{ 
+                  padding: "16px", borderRadius: "8px", border: `2px solid ${formData.paymentMethod === 'debito' ? 'var(--blue-dark)' : 'var(--border-color)'}`,
+                  backgroundColor: formData.paymentMethod === 'debito' ? 'rgba(0, 61, 143, 0.1)' : 'var(--bg-primary)',
+                  color: "var(--text-primary)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px"
+                }}>
+                <CreditCard size={24} /> Cartão Débito
+              </button>
+              <button 
+                onClick={() => setFormData({...formData, paymentMethod: "credito"})}
+                style={{ 
+                  padding: "16px", borderRadius: "8px", border: `2px solid ${formData.paymentMethod === 'credito' ? 'var(--blue-dark)' : 'var(--border-color)'}`,
+                  backgroundColor: formData.paymentMethod === 'credito' ? 'rgba(0, 61, 143, 0.1)' : 'var(--bg-primary)',
+                  color: "var(--text-primary)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px"
+                }}>
+                <CreditCard size={24} /> Cartão Crédito
+              </button>
+              <button 
+                onClick={() => setFormData({...formData, paymentMethod: "dinheiro"})}
+                style={{ 
+                  padding: "16px", borderRadius: "8px", border: `2px solid ${formData.paymentMethod === 'dinheiro' ? 'var(--blue-dark)' : 'var(--border-color)'}`,
+                  backgroundColor: formData.paymentMethod === 'dinheiro' ? 'rgba(0, 61, 143, 0.1)' : 'var(--bg-primary)',
+                  color: "var(--text-primary)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px"
+                }}>
+                <Banknote size={24} /> Dinheiro (Local)
+              </button>
+            </div>
+
             <div style={{ display: "flex", gap: "16px" }}>
               <Button variant="secondary" onClick={() => setStep(2)} style={{ flex: 1 }}>Voltar</Button>
-              <Button onClick={handleNext} style={{ flex: 1 }}>Confirmar Pagamento</Button>
+              <Button onClick={handleNext} style={{ flex: 1 }} disabled={!formData.paymentMethod}>Confirmar Pagamento</Button>
             </div>
           </div>
         )}
@@ -114,26 +198,9 @@ export default function NewSchedule() {
         {step === 4 && (
           <div style={{ textAlign: "center" }}>
             <CheckCircle size={64} color="green" style={{ marginBottom: "16px" }} />
-            <h3 className="mb-2">Tudo Certo!</h3>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>Seu agendamento foi confirmado.</p>
-            
-            <div style={{ marginBottom: "32px" }}>
-              <p style={{ marginBottom: "8px", fontWeight: "bold" }}>Avalie nosso atendimento visual:</p>
-              <div style={{ display: "flex", justifyContent: "center", gap: "8px" }}>
-                {[1, 2, 3, 4, 5].map(star => (
-                  <Star 
-                    key={star} 
-                    size={32} 
-                    color={formData.rating >= star ? "#fbbf24" : "var(--border-color)"} 
-                    fill={formData.rating >= star ? "#fbbf24" : "none"}
-                    onClick={() => setFormData({...formData, rating: star})}
-                    style={{ cursor: "pointer" }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <Button onClick={handleFinish} style={{ width: "100%" }}>Ver Meus Agendamentos</Button>
+            <h3 className="mb-2">Sucesso!</h3>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>Pagamento processado. Seu horário está garantido!</p>
+            <Button onClick={handleFinish} style={{ width: "100%" }}>Concluir</Button>
           </div>
         )}
 

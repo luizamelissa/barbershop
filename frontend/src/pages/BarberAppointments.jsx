@@ -1,19 +1,25 @@
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import { getStorageData, setStorageData } from "../services/storage";
 
 export default function BarberAppointments() {
-  const appointments = [
-    { id: 1, client: "João Silva", service: "Corte Clássico", date: "Hoje", time: "14:00", status: "Confirmado" },
-    { id: 2, client: "Pedro Henrique", service: "Corte + Barba", date: "Hoje", time: "15:30", status: "Pendente" },
-    { id: 3, client: "Lucas Mendes", service: "Barba Terapia", date: "Hoje", time: "17:00", status: "Confirmado" },
-    { id: 4, client: "Marcos Paulo", service: "Pigmentação", date: "Amanhã", time: "09:00", status: "Pendente" },
-  ];
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    setAppointments(getStorageData("atlas_appointments") || []);
+  }, []);
+
+  const changeStatus = (id, newStatus) => {
+    const updated = appointments.map(app => app.id === id ? { ...app, status: newStatus } : app);
+    setAppointments(updated);
+    setStorageData("atlas_appointments", updated);
+  };
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
         <h1 style={{ margin: 0 }}>Agendamentos</h1>
-        <Button>Novo Agendamento</Button>
       </div>
 
       <Card style={{ padding: "0", overflow: "hidden" }}>
@@ -22,35 +28,42 @@ export default function BarberAppointments() {
             <tr>
               <th style={{ padding: "16px" }}>Cliente</th>
               <th style={{ padding: "16px" }}>Serviço</th>
-              <th style={{ padding: "16px" }}>Data</th>
-              <th style={{ padding: "16px" }}>Horário</th>
+              <th style={{ padding: "16px" }}>Barbeiro</th>
+              <th style={{ padding: "16px" }}>Data / Hora</th>
               <th style={{ padding: "16px" }}>Status</th>
               <th style={{ padding: "16px", textAlign: "right" }}>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {appointments.map((app, index) => (
+            {appointments.length === 0 && (
+               <tr>
+                 <td colSpan="6" style={{ padding: "24px", textAlign: "center", color: "var(--text-secondary)" }}>Nenhum agendamento no sistema.</td>
+               </tr>
+            )}
+            {appointments.map((app) => (
               <tr key={app.id} style={{ borderBottom: "1px solid var(--border-color)", backgroundColor: "var(--bg-surface)" }}>
-                <td style={{ padding: "16px", fontWeight: "bold" }}>{app.client}</td>
-                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.service}</td>
-                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.date}</td>
-                <td style={{ padding: "16px", fontWeight: "bold", color: "var(--red-accent)" }}>{app.time}</td>
+                <td style={{ padding: "16px", fontWeight: "bold" }}>{app.clientName}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.serviceName}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.barber}</td>
+                <td style={{ padding: "16px", fontWeight: "bold", color: "var(--red-accent)" }}>{app.date} às {app.time}</td>
                 <td style={{ padding: "16px" }}>
                   <span style={{ 
                     padding: "4px 12px", 
                     borderRadius: "12px", 
                     fontSize: "0.85rem",
                     fontWeight: "bold",
-                    backgroundColor: app.status === "Confirmado" ? "rgba(6, 95, 70, 0.1)" : "rgba(146, 64, 14, 0.1)",
-                    color: app.status === "Confirmado" ? "#065f46" : "#92400e"
+                    backgroundColor: app.status === "Confirmado" ? "rgba(6, 95, 70, 0.1)" : app.status === "Concluído" ? "rgba(0,0,255,0.1)" : "rgba(146, 64, 14, 0.1)",
+                    color: app.status === "Confirmado" ? "#065f46" : app.status === "Concluído" ? "var(--blue-dark)" : "#92400e"
                   }}>
                     {app.status}
                   </span>
                 </td>
                 <td style={{ padding: "16px", display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-                  <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem" }}>Editar</Button>
-                  {app.status === "Pendente" && (
-                    <Button style={{ padding: "4px 8px", fontSize: "0.8rem" }}>Confirmar</Button>
+                  {app.status === "Confirmado" && (
+                    <Button style={{ padding: "4px 8px", fontSize: "0.8rem", backgroundColor: "green" }} onClick={() => changeStatus(app.id, "Concluído")}>Marcar Concluído</Button>
+                  )}
+                  {app.status !== "Cancelado" && (
+                     <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem", color: "red", borderColor: "red" }} onClick={() => changeStatus(app.id, "Cancelado")}>Cancelar</Button>
                   )}
                 </td>
               </tr>

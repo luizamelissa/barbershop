@@ -7,6 +7,7 @@
   
   /* Tema Claro (Light) */
   --bg-primary: #EAEAEA;
+  --bg-secondary: #ffffff;
   --bg-surface: #ffffff;
   --text-primary: #2B1407;
   --text-secondary: #555555;
@@ -26,10 +27,15 @@
 [data-theme="dark"] {
   /* Tema Escuro (Dark) */
   --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
   --bg-surface: #1E1E1E;
   --text-primary: #EAEAEA;
   --text-secondary: #AAAAAA;
   --border-color: #333333;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 * {
@@ -111,6 +117,7 @@ a:hover {
   background-color: var(--red-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+  color: #ffffff; /* Previne que o texto suma/mude cor */
 }
 
 .btn-secondary {
@@ -130,8 +137,9 @@ a:hover {
   gap: 8px;
 }
 .btn-secondary:hover {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   border-color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 /* Inputs */
@@ -156,7 +164,7 @@ a:hover {
   border-radius: var(--border-radius);
   font-family: var(--font-secondary);
   font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
 .input-group input:focus, 
 .input-group select:focus,
