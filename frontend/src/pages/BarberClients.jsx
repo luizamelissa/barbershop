@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -17,57 +16,54 @@ export default function BarberClients() {
   const filteredClients = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-primary)" }}>
-      <Sidebar />
-      <div style={{ marginLeft: "250px", flex: 1, padding: "40px" }}>
-        <h1 style={{ marginBottom: "32px" }}>Lista de Clientes</h1>
+    <div>
+      <h1 style={{ marginBottom: "32px" }}>Lista de Clientes</h1>
 
-        <Card style={{ marginBottom: "24px" }}>
-          <div style={{ display: "flex", gap: "16px", alignItems: "flex-end" }}>
-            <div style={{ flex: 1 }}>
-              <Input 
-                label="Buscar cliente" 
-                placeholder="Digite o nome..." 
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <Button style={{ marginBottom: "16px" }}>Pesquisar</Button>
+      <Card style={{ marginBottom: "24px" }}>
+        <div style={{ display: "flex", gap: "16px", alignItems: "flex-end" }}>
+          <div style={{ flex: 1 }}>
+            <Input 
+              label="Buscar cliente" 
+              placeholder="Digite o nome..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
-        </Card>
+          <Button style={{ marginBottom: "16px" }}>Pesquisar</Button>
+        </div>
+      </Card>
 
-        <Card style={{ padding: "0", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
-            <thead style={{ backgroundColor: "var(--brown-dark)", color: "var(--white)" }}>
-              <tr>
-                <th style={{ padding: "16px" }}>Nome</th>
-                <th style={{ padding: "16px" }}>Telefone</th>
-                <th style={{ padding: "16px" }}>Qtd. Visitas</th>
-                <th style={{ padding: "16px" }}>Última Visita</th>
-                <th style={{ padding: "16px" }}>Ações</th>
+      <Card style={{ padding: "0", overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
+          <thead style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
+            <tr>
+              <th style={{ padding: "16px" }}>Nome</th>
+              <th style={{ padding: "16px" }}>Telefone</th>
+              <th style={{ padding: "16px" }}>Qtd. Visitas</th>
+              <th style={{ padding: "16px" }}>Última Visita</th>
+              <th style={{ padding: "16px", textAlign: "right" }}>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredClients.map((client, index) => (
+              <tr key={client.id} style={{ borderBottom: "1px solid var(--border-color)", backgroundColor: "var(--bg-surface)" }}>
+                <td style={{ padding: "16px", fontWeight: "bold" }}>{client.name}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{client.phone}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{client.visits}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{client.lastVisit}</td>
+                <td style={{ padding: "16px", textAlign: "right" }}>
+                  <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem" }}>Ver Histórico</Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredClients.map((client, index) => (
-                <tr key={client.id} style={{ borderBottom: "1px solid var(--border)", backgroundColor: index % 2 === 0 ? "var(--white)" : "var(--gray-light)" }}>
-                  <td style={{ padding: "16px", fontWeight: "bold" }}>{client.name}</td>
-                  <td style={{ padding: "16px" }}>{client.phone}</td>
-                  <td style={{ padding: "16px" }}>{client.visits}</td>
-                  <td style={{ padding: "16px" }}>{client.lastVisit}</td>
-                  <td style={{ padding: "16px" }}>
-                    <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem" }}>Ver Histórico</Button>
-                  </td>
-                </tr>
-              ))}
-              {filteredClients.length === 0 && (
-                <tr>
-                  <td colSpan="5" style={{ padding: "24px", textAlign: "center" }}>Nenhum cliente encontrado.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </Card>
-      </div>
+            ))}
+            {filteredClients.length === 0 && (
+              <tr>
+                <td colSpan="5" style={{ padding: "24px", textAlign: "center", color: "var(--text-secondary)" }}>Nenhum cliente encontrado.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </Card>
     </div>
   );
 }

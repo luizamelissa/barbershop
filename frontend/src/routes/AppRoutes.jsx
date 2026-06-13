@@ -1,35 +1,58 @@
 import { Routes, Route } from "react-router-dom";
+import { PublicLayout, ClientLayout, AdminLayout } from "../layouts/Layouts";
+
+// Páginas Públicas
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Schedule from "../pages/Schedule";
+import AdminLogin from "../pages/AdminLogin";
+
+// Páginas do Cliente
+import ClientDashboard from "../pages/ClientDashboard";
+import NewSchedule from "../pages/NewSchedule";
 import History from "../pages/History";
 import Profile from "../pages/Profile";
-import Payment from "../pages/Payment";
+
+// Páginas do Admin
 import BarberDashboard from "../pages/BarberDashboard";
 import BarberAppointments from "../pages/BarberAppointments";
 import BarberClients from "../pages/BarberClients";
+import BarberServices from "../pages/BarberServices";
+import BarberScheduleConfig from "../pages/BarberScheduleConfig";
+import BarberFinance from "../pages/BarberFinance";
+import BarberReviews from "../pages/BarberReviews";
 import BarberReports from "../pages/BarberReports";
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* Públicas */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      
-      {/* Cliente */}
-      <Route path="/schedule" element={<Schedule />} />
-      <Route path="/history" element={<History />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/payment" element={<Payment />} />
-      
-      {/* Barbeiro/Admin */}
-      <Route path="/barber/dashboard" element={<BarberDashboard />} />
-      <Route path="/barber/appointments" element={<BarberAppointments />} />
-      <Route path="/barber/clients" element={<BarberClients />} />
-      <Route path="/barber/reports" element={<BarberReports />} />
+      {/* Rotas Públicas */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+      </Route>
+
+      {/* Rotas Privadas - Cliente */}
+      <Route path="/client" element={<ClientLayout />}>
+        <Route path="dashboard" element={<ClientDashboard />} />
+        <Route path="new" element={<NewSchedule />} />
+        <Route path="history" element={<History />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
+
+      {/* Rotas Privadas - Admin */}
+      <Route path="/barber" element={<AdminLayout />}>
+        <Route path="dashboard" element={<BarberDashboard />} />
+        <Route path="appointments" element={<BarberAppointments />} />
+        <Route path="clients" element={<BarberClients />} />
+        <Route path="services" element={<BarberServices />} />
+        <Route path="schedule-config" element={<BarberScheduleConfig />} />
+        <Route path="finance" element={<BarberFinance />} />
+        <Route path="reviews" element={<BarberReviews />} />
+        <Route path="reports" element={<BarberReports />} />
+      </Route>
     </Routes>
   );
 }
