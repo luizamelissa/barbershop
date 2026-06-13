@@ -1,0 +1,165 @@
+:root {
+  /* Paleta de Cores Atlas Barbearia */
+  --blue-dark: #003D8F;
+  --red-accent: #D7260D;
+  --gray-light: #EAEAEA;
+  --brown-dark: #2B1407;
+  --white: #ffffff;
+  
+  /* Tipografia */
+  --font-primary: 'Oswald', sans-serif;
+  --font-secondary: 'Montserrat', sans-serif;
+  
+  /* Shadows e Borders */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  
+  /* Backgrounds defaults */
+  --bg-primary: var(--gray-light);
+  --bg-surface: var(--white);
+  --text-primary: var(--brown-dark);
+  --text-secondary: #555555;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  color: var(--blue-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--blue-dark);
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--red-accent);
+}
+
+/* Componentes Globais */
+.btn-primary {
+  background-color: var(--red-accent);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #b51e0a;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--blue-dark);
+  border: 2px solid var(--blue-dark);
+  padding: 10px 22px;
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--blue-dark);
+  color: var(--white);
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--blue-dark);
+}
+
+.input-group input, 
+.input-group select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus, 
+.input-group select:focus {
+  outline: none;
+  border-color: var(--blue-dark);
+  box-shadow: 0 0 0 2px rgba(0, 61, 143, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.page-header {
+  background-color: var(--blue-dark);
+  color: var(--white);
+  padding: 40px 0;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.text-center { text-align: center; }
+.mt-2 { margin-top: 16px; }
+.mt-4 { margin-top: 32px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-4 { margin-bottom: 32px; }
