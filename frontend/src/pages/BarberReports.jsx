@@ -25,19 +25,43 @@ export default function BarberReports() {
     
     setTopServices(sortedServices);
 
-    // Calculate revenue mock for display (we use current total as latest month)
-    let totalRevenue = 0;
+    const revenueByMonth = {};
     txs.forEach(tx => {
       if (tx.type === "entrada") {
-         totalRevenue += parseFloat(tx.value.replace("R$ ", "").replace(",", "."));
+         const parts = tx.date.split("/");
+         if (parts.length === 3) {
+           const monthYear = `${parts[1]}/${parts[2]}`;
+           const val = parseFloat(tx.value.replace("R$ ", "").replace(",", "."));
+           revenueByMonth[monthYear] = (revenueByMonth[monthYear] || 0) + val;
+         }
       }
     });
 
-    setRevenueStats([
-      { month: "Este Mês (Atual)", value: totalRevenue, percent: 100 },
-      { month: "Mês Anterior", value: totalRevenue * 0.8, percent: 80 },
-      { month: "2 Meses Atrás", value: totalRevenue * 0.6, percent: 60 }
-    ]);
+    const monthNames = {
+      "01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05": "Maio", "06": "Junho",
+      "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"
+    };
+
+    const sortedMonths = Object.keys(revenueByMonth).sort((a, b) => {
+      const [m1, y1] = a.split("/");
+      const [m2, y2] = b.split("/");
+      return new Date(y2, m2 - 1) - new Date(y1, m1 - 1);
+    });
+
+    let maxRev = 0;
+    Object.values(revenueByMonth).forEach(v => { if(v > maxRev) maxRev = v; });
+
+    const newStats = sortedMonths.map(my => {
+      const [m, y] = my.split("/");
+      const val = revenueByMonth[my];
+      return {
+        month: `${monthNames[m]} ${y}`,
+        value: val,
+        percent: maxRev > 0 ? Math.round((val / maxRev) * 100) : 0
+      };
+    });
+
+    setRevenueStats(newStats);
 
   }, []);
 

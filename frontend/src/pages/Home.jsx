@@ -115,7 +115,7 @@ export default function Home() {
 const styles = {
   hero: {
     backgroundColor: "var(--brown-dark)",
-    backgroundImage: "linear-gradient(to bottom, rgba(43, 20, 7, 0.85), rgba(0, 61, 143, 0.95))",
+    backgroundImage: "var(--hero-gradient)",
     padding: "120px 20px",
   },
   featureBox: {

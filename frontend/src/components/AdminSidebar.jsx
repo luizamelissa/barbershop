@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, CalendarDays, Users, Scissors, Clock, DollarSign, Star, BarChart3, LogOut } from "lucide-react";
+import { LayoutDashboard, CalendarDays, Users, Scissors, Clock, DollarSign, BarChart3, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function AdminSidebar() {
@@ -14,7 +14,6 @@ export default function AdminSidebar() {
     { path: "/barber/services", name: "Serviços", icon: <Scissors size={20} /> },
     { path: "/barber/schedule-config", name: "Horários", icon: <Clock size={20} /> },
     { path: "/barber/finance", name: "Financeiro", icon: <DollarSign size={20} /> },
-    { path: "/barber/reviews", name: "Avaliações", icon: <Star size={20} /> },
     { path: "/barber/reports", name: "Relatórios", icon: <BarChart3 size={20} /> }
   ];
 

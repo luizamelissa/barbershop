@@ -22,16 +22,19 @@
   /* Tipografia */
   --font-primary: 'Oswald', sans-serif;
   --font-secondary: 'Montserrat', sans-serif;
+  
+  --hero-gradient: linear-gradient(to bottom, rgba(43, 20, 7, 0.85), rgba(0, 61, 143, 0.95));
 }
 
 [data-theme="dark"] {
-  /* Tema Escuro (Dark) */
-  --bg-primary: #121212;
-  --bg-secondary: #1E1E1E;
-  --bg-surface: #1E1E1E;
+  /* Tema Escuro (Dark) Premium */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-surface: #121212;
   --text-primary: #EAEAEA;
   --text-secondary: #AAAAAA;
-  --border-color: #333333;
+  --border-color: #262626;
+  --hero-gradient: linear-gradient(to bottom, rgba(10, 10, 10, 0.8), rgba(20, 20, 20, 1));
 }
 
 html {

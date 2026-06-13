@@ -5,11 +5,7 @@ export const initStorage = () => {
     atlas_appointments: [],
     atlas_transactions: [],
     atlas_reviews: [],
-    atlas_services: [
-      { id: 1, name: "Corte Clássico", duration: "40 min", price: "45.00", active: true },
-      { id: 2, name: "Barba Terapia", duration: "30 min", price: "35.00", active: true },
-      { id: 3, name: "Corte + Barba", duration: "1h 10min", price: "75.00", active: true }
-    ],
+    atlas_services: [],
     atlas_config: {
       days: [
         { name: "Segunda-feira", active: true, start: "09:00", end: "20:00" },

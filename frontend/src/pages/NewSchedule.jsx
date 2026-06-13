@@ -16,7 +16,6 @@ export default function NewSchedule() {
   
   const [formData, setFormData] = useState({
     serviceId: "",
-    barber: "",
     date: "",
     time: "",
     paymentMethod: ""
@@ -40,7 +39,6 @@ export default function NewSchedule() {
       serviceId: formData.serviceId,
       serviceName: selectedService.name,
       price: selectedService.price,
-      barber: formData.barber,
       date: formData.date,
       time: formData.time,
       status: "Confirmado"
@@ -98,16 +96,7 @@ export default function NewSchedule() {
                 ))}
               </select>
             </div>
-            <div className="input-group mt-2">
-              <label>Escolha o Barbeiro</label>
-              <select value={formData.barber} onChange={(e) => setFormData({...formData, barber: e.target.value})}>
-                <option value="" disabled>Selecione...</option>
-                <option value="Carlos Machado">Carlos Machado</option>
-                <option value="Roberto Almeida">Roberto Almeida</option>
-                <option value="Fernando Silva">Fernando Silva</option>
-              </select>
-            </div>
-            <Button onClick={handleNext} style={{ width: "100%", marginTop: "16px" }} disabled={!formData.serviceId || !formData.barber}>
+            <Button onClick={handleNext} style={{ width: "100%", marginTop: "16px" }} disabled={!formData.serviceId}>
               Próximo
             </Button>
           </div>

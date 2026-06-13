@@ -1,5 +1,5 @@
 import Card from "../components/Card";
-import { History as HistoryIcon, MapPin, Clock, Star } from "lucide-react";
+import { History as HistoryIcon, MapPin, Clock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useState, useEffect } from "react";
@@ -8,39 +8,13 @@ import Button from "../components/Button";
 export default function History() {
   const { user } = useAuth();
   const [pastApps, setPastApps] = useState([]);
-  const [ratingTarget, setRatingTarget] = useState(null);
-  const [ratingValue, setRatingValue] = useState(0);
 
   useEffect(() => {
     const allApps = getStorageData("atlas_appointments") || [];
-    // Filtra apenas agendamentos do cliente concluídos ou com status Avaliado
-    const userApps = allApps.filter(app => app.clientId === user?.id && (app.status === "Concluído" || app.status === "Avaliado"));
+    // Filtra apenas agendamentos do cliente concluídos
+    const userApps = allApps.filter(app => app.clientId === user?.id && app.status === "Concluído");
     setPastApps(userApps);
   }, [user]);
-
-  const handleRating = (appId) => {
-    const allApps = getStorageData("atlas_appointments") || [];
-    const appIndex = allApps.findIndex(a => a.id === appId);
-    if (appIndex > -1) {
-      allApps[appIndex].status = "Avaliado";
-      setStorageData("atlas_appointments", allApps);
-
-      const allReviews = getStorageData("atlas_reviews") || [];
-      const newReview = {
-        id: Date.now().toString(),
-        client: user.firstName,
-        rating: ratingValue,
-        comment: "Avaliação rápida pelo painel do cliente.",
-        date: new Date().toLocaleDateString("pt-BR")
-      };
-      setStorageData("atlas_reviews", [newReview, ...allReviews]);
-
-      setPastApps(pastApps.map(a => a.id === appId ? { ...a, status: "Avaliado" } : a));
-      setRatingTarget(null);
-      setRatingValue(0);
-      alert("Avaliação enviada!");
-    }
-  };
 
   return (
     <div>
@@ -82,30 +56,6 @@ export default function History() {
                 }}>
                   {app.status}
                 </span>
-                
-                {app.status === "Concluído" && ratingTarget !== app.id && (
-                  <button onClick={() => setRatingTarget(app.id)} style={{ background: "none", border: "none", color: "var(--red-accent)", cursor: "pointer", fontSize: "0.9rem", textDecoration: "underline" }}>
-                    Avaliar
-                  </button>
-                )}
-
-                {ratingTarget === app.id && (
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                     <div style={{ display: "flex", gap: "2px" }}>
-                       {[1, 2, 3, 4, 5].map(star => (
-                         <Star 
-                           key={star} 
-                           size={20} 
-                           fill={ratingValue >= star ? "#fbbf24" : "none"} 
-                           color={ratingValue >= star ? "#fbbf24" : "var(--border-color)"}
-                           onClick={() => setRatingValue(star)}
-                           style={{ cursor: "pointer" }}
-                         />
-                       ))}
-                     </div>
-                     <Button style={{ padding: "4px 8px", fontSize: "0.8rem" }} onClick={() => handleRating(app.id)} disabled={ratingValue === 0}>Salvar</Button>
-                  </div>
-                )}
               </div>
             </Card>
           ))}
