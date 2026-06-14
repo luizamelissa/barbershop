@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
-import { Calendar, Clock, MapPin, CreditCard } from "lucide-react";
+import { Calendar, Clock, MapPin, CreditCard, User } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useState, useEffect } from "react";
@@ -67,6 +67,7 @@ export default function ClientDashboard() {
                     <h3 style={{ marginBottom: "8px", color: "var(--blue-dark)" }} className="text-brand">{app.serviceName}</h3>
                     <div style={{ display: "flex", gap: "16px", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><Clock size={16} /> {app.time}</span>
+                      {app.barberName && <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><User size={16} /> Com {app.barberName}</span>}
                       <span style={{ display: "flex", alignItems: "center", gap: "4px", textTransform: "capitalize" }}><CreditCard size={16} /> Pagamento: {app.paymentMethod === 'credito' ? 'Crédito' : app.paymentMethod === 'debito' ? 'Débito' : app.paymentMethod || 'N/A'}</span>
                     </div>
                   </div>

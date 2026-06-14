@@ -51,7 +51,10 @@ export default function BarberAppointments() {
             {appointments.map((app) => (
               <tr key={app.id} style={{ borderBottom: "1px solid var(--border-color)", backgroundColor: "var(--bg-surface)" }}>
                 <td style={{ padding: "16px", fontWeight: "bold" }}>{app.clientName}</td>
-                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.serviceName}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>
+                  <div>{app.serviceName}</div>
+                  {app.barberName && <div style={{ fontSize: "0.85rem", color: "var(--brand-blue)" }}>{app.barberName}</div>}
+                </td>
                 <td style={{ padding: "16px", color: "var(--text-secondary)", textTransform: "capitalize" }}>
                   {app.paymentMethod === 'credito' ? 'Crédito' : app.paymentMethod === 'debito' ? 'Débito' : app.paymentMethod || 'N/A'}
                 </td>

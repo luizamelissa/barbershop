@@ -1,5 +1,5 @@
 import Card from "../components/Card";
-import { History as HistoryIcon, MapPin, Clock, Star, CreditCard } from "lucide-react";
+import { History as HistoryIcon, MapPin, Clock, Star, CreditCard, User } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getStorageData, setStorageData } from "../services/storage";
 import { useState, useEffect } from "react";
@@ -65,6 +65,7 @@ export default function History() {
                   <h3 style={{ margin: 0, color: "var(--text-primary)" }}>{app.serviceName}</h3>
                   <div style={{ display: "flex", gap: "16px", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
                     <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><Clock size={16} /> {app.date} às {app.time}</span>
+                    {app.barberName && <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><User size={16} /> {app.barberName}</span>}
                     <span style={{ display: "flex", alignItems: "center", gap: "4px", textTransform: "capitalize" }}><CreditCard size={16} /> Pagamento: {app.paymentMethod === 'credito' ? 'Crédito' : app.paymentMethod === 'debito' ? 'Débito' : app.paymentMethod || 'N/A'}</span>
                   </div>
                 </div>

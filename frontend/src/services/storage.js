@@ -6,6 +6,7 @@ export const initStorage = () => {
     atlas_transactions: [],
     atlas_reviews: [],
     atlas_services: [],
+    atlas_barbers: [],
     atlas_config: {
       days: [
         { name: "Segunda-feira", active: true, start: "09:00", end: "20:00" },
