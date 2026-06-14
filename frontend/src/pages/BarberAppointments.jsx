@@ -16,6 +16,14 @@ export default function BarberAppointments() {
     setStorageData("atlas_appointments", updated);
   };
 
+  const handleDelete = (id) => {
+    if(window.confirm("Apagar agendamento definitivamente?")) {
+      const updated = appointments.filter(app => app.id !== id);
+      setAppointments(updated);
+      setStorageData("atlas_appointments", updated);
+    }
+  };
+
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
@@ -28,7 +36,7 @@ export default function BarberAppointments() {
             <tr>
               <th style={{ padding: "16px" }}>Cliente</th>
               <th style={{ padding: "16px" }}>Serviço</th>
-              <th style={{ padding: "16px" }}>Barbeiro</th>
+              <th style={{ padding: "16px" }}>Pagamento</th>
               <th style={{ padding: "16px" }}>Data / Hora</th>
               <th style={{ padding: "16px" }}>Status</th>
               <th style={{ padding: "16px", textAlign: "right" }}>Ações</th>
@@ -44,7 +52,9 @@ export default function BarberAppointments() {
               <tr key={app.id} style={{ borderBottom: "1px solid var(--border-color)", backgroundColor: "var(--bg-surface)" }}>
                 <td style={{ padding: "16px", fontWeight: "bold" }}>{app.clientName}</td>
                 <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.serviceName}</td>
-                <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{app.barber}</td>
+                <td style={{ padding: "16px", color: "var(--text-secondary)", textTransform: "capitalize" }}>
+                  {app.paymentMethod === 'credito' ? 'Crédito' : app.paymentMethod === 'debito' ? 'Débito' : app.paymentMethod || 'N/A'}
+                </td>
                 <td style={{ padding: "16px", fontWeight: "bold", color: "var(--red-accent)" }}>{app.date} às {app.time}</td>
                 <td style={{ padding: "16px" }}>
                   <span style={{ 
@@ -52,19 +62,23 @@ export default function BarberAppointments() {
                     borderRadius: "12px", 
                     fontSize: "0.85rem",
                     fontWeight: "bold",
-                    backgroundColor: app.status === "Confirmado" ? "rgba(6, 95, 70, 0.1)" : app.status === "Concluído" ? "rgba(0,0,255,0.1)" : "rgba(146, 64, 14, 0.1)",
-                    color: app.status === "Confirmado" ? "#065f46" : app.status === "Concluído" ? "var(--blue-dark)" : "#92400e"
+                    backgroundColor: app.status === "Confirmado" ? "var(--bg-status-success)" : app.status === "Concluído" ? "var(--bg-status-info)" : app.status === "Falta" ? "var(--bg-status-warning)" : "var(--bg-status-danger)",
+                    color: app.status === "Confirmado" ? "var(--status-success)" : app.status === "Concluído" ? "var(--status-info)" : app.status === "Falta" ? "var(--status-warning)" : "var(--status-danger)"
                   }}>
                     {app.status}
                   </span>
                 </td>
-                <td style={{ padding: "16px", display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                <td style={{ padding: "16px", display: "flex", gap: "8px", justifyContent: "flex-end", flexWrap: "wrap" }}>
                   {app.status === "Confirmado" && (
-                    <Button style={{ padding: "4px 8px", fontSize: "0.8rem", backgroundColor: "green" }} onClick={() => changeStatus(app.id, "Concluído")}>Marcar Concluído</Button>
+                    <>
+                      <Button style={{ padding: "4px 8px", fontSize: "0.8rem", backgroundColor: "var(--status-success)" }} onClick={() => changeStatus(app.id, "Concluído")}>Concluir</Button>
+                      <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem", color: "var(--status-warning)", borderColor: "var(--status-warning)" }} onClick={() => changeStatus(app.id, "Falta")}>Falta</Button>
+                    </>
                   )}
-                  {app.status !== "Cancelado" && (
-                     <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem", color: "red", borderColor: "red" }} onClick={() => changeStatus(app.id, "Cancelado")}>Cancelar</Button>
+                  {app.status !== "Cancelado" && app.status !== "Concluído" && app.status !== "Falta" && (
+                     <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem", color: "var(--status-danger)", borderColor: "var(--status-danger)" }} onClick={() => changeStatus(app.id, "Cancelado")}>Cancelar</Button>
                   )}
+                  <Button variant="secondary" style={{ padding: "4px 8px", fontSize: "0.8rem", color: "var(--text-secondary)", borderColor: "var(--border-color)" }} onClick={() => handleDelete(app.id)}>Excluir</Button>
                 </td>
               </tr>
             ))}

@@ -41,6 +41,7 @@ export default function NewSchedule() {
       price: selectedService.price,
       date: formData.date,
       time: formData.time,
+      paymentMethod: formData.paymentMethod,
       status: "Confirmado"
     };
 

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { PublicLayout, ClientLayout, AdminLayout } from "../layouts/Layouts";
 
 // Páginas Públicas
@@ -29,6 +29,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin-login" element={<Navigate to="/login" replace />} />
       </Route>
 
       {/* Rotas Privadas - Cliente */}
@@ -49,6 +50,9 @@ function AppRoutes() {
         <Route path="finance" element={<BarberFinance />} />
         <Route path="reports" element={<BarberReports />} />
       </Route>
+
+      {/* Fallback 404 */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

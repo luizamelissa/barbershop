@@ -20,9 +20,9 @@ export default function BarberDashboard() {
     const todayStr = new Date().toISOString().split('T')[0];
     const todayApps = apps.filter(a => a.date === todayStr);
 
-    const revenue = txs.reduce((acc, tx) => {
-      if (tx.type === "entrada") {
-        const val = parseFloat(tx.value.replace("R$ ", "").replace(",", "."));
+    const revenue = apps.reduce((acc, app) => {
+      if (app.status === "Concluído") {
+        const val = parseFloat(app.price ? app.price.toString().replace("R$ ", "").replace(",", ".") : 0);
         return acc + val;
       }
       return acc;
@@ -41,10 +41,10 @@ export default function BarberDashboard() {
   }, []);
 
   const statCards = [
-    { title: "Total Clientes", value: stats.clients, change: "", icon: <Users size={28} color="var(--blue-dark)" /> },
-    { title: "Agendamentos Hoje", value: stats.appointmentsToday, change: "", icon: <CalendarCheck size={28} color="var(--red-accent)" /> },
-    { title: "Serviços Cadastrados", value: stats.servicesMonth, change: "", icon: <TrendingUp size={28} color="var(--blue-dark)" /> },
-    { title: "Faturamento Bruto", value: stats.revenue, change: "", icon: <DollarSign size={28} color="green" /> },
+    { title: "Total Clientes", value: stats.clients, change: "", icon: <Users size={28} color="var(--brand-blue)" /> },
+    { title: "Agendamentos Hoje", value: stats.appointmentsToday, change: "", icon: <CalendarCheck size={28} color="var(--brand-red)" /> },
+    { title: "Serviços Cadastrados", value: stats.servicesMonth, change: "", icon: <TrendingUp size={28} color="var(--brand-blue)" /> },
+    { title: "Faturamento Realizado", value: stats.revenue, change: "", icon: <DollarSign size={28} color="var(--status-success)" /> },
   ];
 
   return (
@@ -76,16 +76,14 @@ export default function BarberDashboard() {
 
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px" }}>
         <Card>
-          <h2 style={{ marginBottom: "24px" }}>Fluxo de Clientes (Mock Semanal)</h2>
+          <h2 style={{ marginBottom: "24px" }}>Fluxo de Clientes (Ativos)</h2>
           <div style={{ height: "300px", display: "flex", alignItems: "flex-end", gap: "16px", padding: "20px 0", borderBottom: "1px solid var(--border-color)" }}>
-            {[40, 60, 30, 80, 100, 120, 50].map((h, i) => (
-              <div key={i} style={{ flex: 1, backgroundColor: "var(--blue-dark)", height: `${h}%`, borderRadius: "4px 4px 0 0", position: "relative", transition: "height 0.3s" }}>
-                <span style={{ position: "absolute", top: "-24px", left: "50%", transform: "translateX(-50%)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>{h}</span>
-              </div>
-            ))}
+            <div style={{ flex: 1, backgroundColor: "var(--brand-blue)", height: `${Math.min(stats.clients * 5, 100)}%`, minHeight: "10%", borderRadius: "4px 4px 0 0", position: "relative", transition: "height 0.3s" }}>
+              <span style={{ position: "absolute", top: "-24px", left: "50%", transform: "translateX(-50%)", fontSize: "1.2rem", fontWeight: "bold", color: "var(--text-primary)" }}>{stats.clients}</span>
+            </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "12px", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-            <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "12px", color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+            <span>Total de Clientes Cadastrados</span>
           </div>
         </Card>
 
@@ -97,7 +95,7 @@ export default function BarberDashboard() {
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {recentApps.map((app, i) => (
                 <div key={i} style={{ display: "flex", gap: "16px", alignItems: "center", borderBottom: i !== recentApps.length - 1 ? "1px solid var(--border-color)" : "none", paddingBottom: i !== recentApps.length - 1 ? "12px" : "0" }}>
-                  <div style={{ fontWeight: "bold", color: "var(--red-accent)" }}>{app.time}</div>
+                  <div style={{ fontWeight: "bold", color: "var(--brand-red)" }}>{app.time}</div>
                   <div>
                     <div style={{ fontWeight: "bold", color: "var(--text-primary)" }}>{app.clientName}</div>
                     <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{app.serviceName}</div>

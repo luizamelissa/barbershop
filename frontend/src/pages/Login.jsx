@@ -16,16 +16,16 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email && password) {
-      const success = login(email, password, loginType);
+      const loggedUser = login(email, password, loginType);
       
-      if (success) {
-        if (loginType === "admin") {
+      if (loggedUser) {
+        if (loggedUser.role === "admin") {
           navigate("/barber/dashboard");
         } else {
           navigate("/client/dashboard");
         }
       } else {
-        alert("Credenciais inválidas para o tipo selecionado.");
+        alert("Credenciais inválidas para o perfil selecionado.");
       }
     }
   };
@@ -37,11 +37,11 @@ export default function Login() {
 
   return (
     <div className="container" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "calc(100vh - 200px)", padding: "40px 20px" }}>
-      <Card style={{ width: "100%", maxWidth: "400px", borderTop: loginType === 'admin' ? "4px solid var(--blue-dark)" : "none" }}>
+      <Card style={{ width: "100%", maxWidth: "400px", borderTop: loginType === 'admin' ? "4px solid var(--brand-blue)" : "none" }}>
         
         {loginType === 'admin' && (
            <div style={{ textAlign: "center", marginBottom: "16px" }}>
-             <Scissors size={32} color="var(--blue-dark)" />
+             <Scissors size={32} color="var(--brand-blue)" />
            </div>
         )}
 
@@ -51,10 +51,11 @@ export default function Login() {
         
         <div style={{ display: "flex", gap: "8px", marginBottom: "24px" }}>
           <button 
+            type="button"
             onClick={() => setLoginType("cliente")}
             style={{ 
               flex: 1, padding: "8px", border: "none", cursor: "pointer", 
-              backgroundColor: loginType === "cliente" ? "var(--red-accent)" : "var(--bg-primary)",
+              backgroundColor: loginType === "cliente" ? "var(--brand-red)" : "var(--bg-primary)",
               color: loginType === "cliente" ? "#fff" : "var(--text-secondary)",
               borderRadius: "4px"
             }}
@@ -62,10 +63,11 @@ export default function Login() {
             Cliente
           </button>
           <button 
+            type="button"
             onClick={() => setLoginType("admin")}
             style={{ 
               flex: 1, padding: "8px", border: "none", cursor: "pointer", 
-              backgroundColor: loginType === "admin" ? "var(--blue-dark)" : "var(--bg-primary)",
+              backgroundColor: loginType === "admin" ? "var(--brand-blue)" : "var(--bg-primary)",
               color: loginType === "admin" ? "#fff" : "var(--text-secondary)",
               borderRadius: "4px"
             }}
@@ -78,7 +80,7 @@ export default function Login() {
           <Input 
             label="E-mail" 
             type="email" 
-            placeholder="seu@email.com" 
+            placeholder={loginType === 'admin' ? "admin@atlas.com" : "seu@email.com"} 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required 
@@ -92,7 +94,7 @@ export default function Login() {
             required 
           />
           
-          <Button type="submit" style={{ width: "100%", marginTop: "16px", backgroundColor: loginType === 'admin' ? "var(--blue-dark)" : "var(--red-accent)" }}>
+          <Button type="submit" style={{ width: "100%", marginTop: "16px", backgroundColor: loginType === 'admin' ? "var(--brand-blue)" : "var(--brand-red)", border: "none" }}>
             Entrar
           </Button>
         </form>
@@ -104,12 +106,12 @@ export default function Login() {
               <span style={{ backgroundColor: "var(--bg-surface)", padding: "0 10px", color: "var(--text-secondary)", position: "relative", zIndex: 2 }}>ou</span>
             </div>
 
-            <Button variant="secondary" style={{ width: "100%", display: "flex", justifyContent: "center" }} onClick={handleGoogleLogin}>
+            <Button type="button" variant="secondary" style={{ width: "100%", display: "flex", justifyContent: "center" }} onClick={handleGoogleLogin}>
               Entrar com Google
             </Button>
 
             <p className="text-center mt-4" style={{ color: "var(--text-secondary)" }}>
-              Ainda não tem conta? <Link to="/register" style={{ fontWeight: "bold", color: "var(--red-accent)" }}>Cadastre-se</Link>
+              Ainda não tem conta? <Link to="/register" style={{ fontWeight: "bold", color: "var(--brand-red)" }}>Cadastre-se</Link>
             </p>
           </>
         )}

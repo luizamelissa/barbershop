@@ -78,9 +78,9 @@ export default function Navbar() {
 
 const styles = {
   navbar: {
-    backgroundColor: "var(--blue-dark)",
+    backgroundColor: "var(--bg-navbar)",
     padding: "16px 0",
-    color: "#ffffff",
+    color: "var(--text-navbar)",
     boxShadow: "var(--shadow-md)",
     position: "sticky",
     top: 0,
@@ -97,7 +97,7 @@ const styles = {
     gap: "12px",
     fontFamily: "var(--font-primary)",
     fontSize: "1.5rem",
-    color: "#ffffff",
+    color: "var(--text-navbar)",
     textTransform: "uppercase",
     letterSpacing: "1px"
   },
@@ -107,7 +107,7 @@ const styles = {
     gap: "24px"
   },
   linkBtn: {
-    color: "#ffffff",
+    color: "var(--text-navbar)",
     fontFamily: "var(--font-secondary)",
     fontWeight: "500",
     transition: "color 0.2s",
@@ -120,7 +120,7 @@ const styles = {
   iconBtn: {
     background: "none",
     border: "none",
-    color: "#ffffff",
+    color: "var(--text-navbar)",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",

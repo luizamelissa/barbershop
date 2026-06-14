@@ -35,30 +35,30 @@ export default function Home() {
       </section>
 
       {/* Por que escolher */}
-      <section style={{ backgroundColor: "var(--blue-dark)", padding: "80px 0", color: "#ffffff" }}>
+      <section style={{ backgroundColor: "var(--bg-features)", padding: "80px 0", color: "var(--text-features)" }}>
         <div className="container">
-          <h2 style={{ textAlign: "center", color: "#ffffff", marginBottom: "48px", fontSize: "2.5rem" }}>Por que escolher a Barbearia Atlas?</h2>
+          <h2 style={{ textAlign: "center", color: "var(--text-features)", marginBottom: "48px", fontSize: "2.5rem" }}>Por que escolher a Barbearia Atlas?</h2>
           
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "32px" }}>
             <div style={styles.featureBox}>
-              <Star size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Atendimento Premium</h3>
-              <p style={{ color: "#cccccc" }}>Nosso foco absoluto é a sua satisfação. Desde o café de boas-vindas até o último ajuste do corte.</p>
+              <Star size={40} color="var(--brand-red)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "var(--text-features)", marginBottom: "12px" }}>Atendimento Premium</h3>
+              <p style={{ color: "var(--text-features-muted)" }}>Nosso foco absoluto é a sua satisfação. Desde o café de boas-vindas até o último ajuste do corte.</p>
             </div>
             <div style={styles.featureBox}>
-              <Scissors size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Profissionais Qualificados</h3>
-              <p style={{ color: "#cccccc" }}>Nossa equipe é formada por especialistas que dominam visagismo e as melhores técnicas de barber shop.</p>
+              <Scissors size={40} color="var(--brand-red)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "var(--text-features)", marginBottom: "12px" }}>Profissionais Qualificados</h3>
+              <p style={{ color: "var(--text-features-muted)" }}>Nossa equipe é formada por especialistas que dominam visagismo e as melhores técnicas de barber shop.</p>
             </div>
             <div style={styles.featureBox}>
-              <CheckCircle size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Ambiente Confortável</h3>
-              <p style={{ color: "#cccccc" }}>Um espaço climatizado, com música boa, TV e cerveja gelada esperando por você.</p>
+              <CheckCircle size={40} color="var(--brand-red)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "var(--text-features)", marginBottom: "12px" }}>Ambiente Confortável</h3>
+              <p style={{ color: "var(--text-features-muted)" }}>Um espaço climatizado, com música boa, TV e cerveja gelada esperando por você.</p>
             </div>
             <div style={styles.featureBox}>
-              <Clock size={40} color="var(--red-accent)" style={{ marginBottom: "16px" }} />
-              <h3 style={{ color: "#ffffff", marginBottom: "12px" }}>Tradição e Estilo</h3>
-              <p style={{ color: "#cccccc" }}>Unimos a cultura clássica da barbearia raiz com as inovações estéticas contemporâneas.</p>
+              <Clock size={40} color="var(--brand-red)" style={{ marginBottom: "16px" }} />
+              <h3 style={{ color: "var(--text-features)", marginBottom: "12px" }}>Tradição e Estilo</h3>
+              <p style={{ color: "var(--text-features-muted)" }}>Unimos a cultura clássica da barbearia raiz com as inovações estéticas contemporâneas.</p>
             </div>
           </div>
         </div>

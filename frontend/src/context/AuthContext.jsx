@@ -34,9 +34,9 @@ export function AuthProvider({ children }) {
     if (targetUser) {
       setUser(targetUser);
       setStorageData("atlas_current_user", targetUser);
-      return true;
+      return targetUser;
     }
-    return false;
+    return null;
   };
 
   const register = (userData) => {

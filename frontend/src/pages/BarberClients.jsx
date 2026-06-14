@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { getStorageData } from "../services/storage";
+import { getStorageData, setStorageData } from "../services/storage";
+import { Trash2 } from "lucide-react";
 
 export default function BarberClients() {
   const [search, setSearch] = useState("");
@@ -14,6 +15,15 @@ export default function BarberClients() {
   }, []);
 
   const filteredClients = clients.filter(c => c.firstName.toLowerCase().includes(search.toLowerCase()) || (c.email && c.email.toLowerCase().includes(search.toLowerCase())));
+
+  const handleDelete = (id) => {
+    if(window.confirm("Apagar cliente definitivamente?")) {
+      const allUsers = getStorageData("atlas_users") || [];
+      const updatedUsers = allUsers.filter(u => u.id !== id);
+      setStorageData("atlas_users", updatedUsers);
+      setClients(updatedUsers.filter(u => u.role === "cliente"));
+    }
+  };
 
   return (
     <div>
@@ -40,6 +50,7 @@ export default function BarberClients() {
               <th style={{ padding: "16px" }}>E-mail</th>
               <th style={{ padding: "16px" }}>Telefone</th>
               <th style={{ padding: "16px", textAlign: "right" }}>ID Local</th>
+              <th style={{ padding: "16px", textAlign: "right" }}>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +61,11 @@ export default function BarberClients() {
                 <td style={{ padding: "16px", color: "var(--text-secondary)" }}>{client.phone || "Não informado"}</td>
                 <td style={{ padding: "16px", textAlign: "right", color: "var(--text-secondary)", fontSize: "0.8rem" }}>
                   {client.id}
+                </td>
+                <td style={{ padding: "16px", textAlign: "right" }}>
+                  <button onClick={() => handleDelete(client.id)} style={{ border: "none", background: "none", cursor: "pointer", color: "var(--brand-red)" }}>
+                    <Trash2 size={18} />
+                  </button>
                 </td>
               </tr>
             ))}

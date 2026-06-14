@@ -81,8 +81,8 @@ export default function BarberServices() {
                   <button onClick={() => toggleStatus(service.id)} style={{
                     border: "none", background: "none", cursor: "pointer",
                     padding: "4px 12px", borderRadius: "12px", fontSize: "0.85rem", fontWeight: "bold",
-                    backgroundColor: service.active ? "rgba(6, 95, 70, 0.1)" : "rgba(153, 27, 27, 0.1)",
-                    color: service.active ? "#065f46" : "#991b1b"
+                    backgroundColor: service.active ? "var(--bg-status-success)" : "var(--bg-status-danger)",
+                    color: service.active ? "var(--status-success)" : "var(--status-danger)"
                   }}>
                     {service.active ? "Ativo" : "Inativo"}
                   </button>
