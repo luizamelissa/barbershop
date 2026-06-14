@@ -1,15 +1,17 @@
 {
   "name": "barbershop-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "firebase": "^12.14.0",
     "firebase-admin": "^14.0.0",
     "morgan": "^1.11.0"
   },
