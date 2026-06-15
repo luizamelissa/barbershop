@@ -84,3 +84,5 @@ npm run dev
 - ✔ Backend estruturado
 - ✔ Firebase integrado
 - 🛠 Ajustes finais em andamento
+
+link do site: https://barbeariaatlas.netlify.app/login
