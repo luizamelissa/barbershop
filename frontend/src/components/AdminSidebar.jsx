@@ -12,8 +12,6 @@ export default function AdminSidebar() {
     { path: "/barber/appointments", name: "Agenda", icon: <CalendarDays size={20} /> },
     { path: "/barber/clients", name: "Clientes", icon: <Users size={20} /> },
     { path: "/barber/services", name: "Serviços", icon: <Scissors size={20} /> },
-    { path: "/barber/professionals", name: "Profissionais", icon: <UserCheck size={20} /> },
-    { path: "/barber/schedule-config", name: "Horários", icon: <Clock size={20} /> },
     { path: "/barber/finance", name: "Financeiro", icon: <DollarSign size={20} /> },
     { path: "/barber/reports", name: "Relatórios", icon: <BarChart3 size={20} /> }
   ];

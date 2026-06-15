@@ -64,7 +64,7 @@ const deleteService = async (req, res) => {
   }
 };
 
-export default {
+export {
   createService,
   getServices,
   updateService,

@@ -8,31 +8,41 @@ import { Scissors } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState("cliente"); // 'cliente' | 'admin'
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (email && password) {
-      const loggedUser = login(email, password, loginType);
-      
-      if (loggedUser) {
-        if (loggedUser.role === "admin") {
-          navigate("/barber/dashboard");
-        } else {
-          navigate("/client/dashboard");
+      try {
+        const loggedUser = await login(email, password);
+        
+        if (loggedUser) {
+          if (loggedUser.role === "admin") {
+            navigate("/barber/dashboard");
+          } else {
+            navigate("/client/dashboard");
+          }
         }
-      } else {
-        alert("Credenciais inválidas para o perfil selecionado.");
+      } catch (error) {
+        console.error("Login failed", error);
+        alert("Credenciais inválidas ou erro no servidor.");
       }
     }
   };
 
-  const handleGoogleLogin = () => {
-    login("google@mock.com", "mock123", "cliente");
-    navigate("/client/dashboard");
+  const handleGoogleLogin = async () => {
+    try {
+      const loggedUser = await loginWithGoogle();
+      if (loggedUser) {
+        navigate("/client/dashboard");
+      }
+    } catch (error) {
+      console.error("Google Login failed", error);
+      alert("Falha no login com Google.");
+    }
   };
 
   return (

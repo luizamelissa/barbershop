@@ -18,7 +18,7 @@ export function PublicLayout() {
 export function ClientLayout() {
   const { user } = useAuth();
   
-  if (!user || user.role !== "cliente") {
+  if (!user || (user.role !== "cliente" && user.role !== "client")) {
     return <Navigate to="/login" replace />;
   }
 

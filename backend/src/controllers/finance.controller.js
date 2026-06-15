@@ -31,7 +31,7 @@ const deleteFinance = async (req, res) => {
 };
 
 
-export default {
+export {
   getFinance,
   deleteFinance
 };

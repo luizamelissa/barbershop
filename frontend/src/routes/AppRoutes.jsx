@@ -17,8 +17,6 @@ import BarberDashboard from "../pages/BarberDashboard";
 import BarberAppointments from "../pages/BarberAppointments";
 import BarberClients from "../pages/BarberClients";
 import BarberServices from "../pages/BarberServices";
-import BarberProfessionals from "../pages/BarberProfessionals";
-import BarberScheduleConfig from "../pages/BarberScheduleConfig";
 import BarberFinance from "../pages/BarberFinance";
 import BarberReports from "../pages/BarberReports";
 
@@ -47,8 +45,6 @@ function AppRoutes() {
         <Route path="appointments" element={<BarberAppointments />} />
         <Route path="clients" element={<BarberClients />} />
         <Route path="services" element={<BarberServices />} />
-        <Route path="professionals" element={<BarberProfessionals />} />
-        <Route path="schedule-config" element={<BarberScheduleConfig />} />
         <Route path="finance" element={<BarberFinance />} />
         <Route path="reports" element={<BarberReports />} />
       </Route>

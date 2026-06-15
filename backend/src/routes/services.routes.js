@@ -12,21 +12,21 @@ router.get("/", servicesController.getServices);
 router.post(
   "/",
   verifyToken,
-  checkRole(["admin", "barber"]),
+  checkRole(["admin"]),
   servicesController.createService
 );
 
 router.put(
   "/:id",
   verifyToken,
-  checkRole(["admin", "barber"]),
+  checkRole(["admin"]),
   servicesController.updateService
 );
 
 router.delete(
   "/:id",
   verifyToken,
-  checkRole(["admin", "barber"]),
+  checkRole(["admin"]),
   servicesController.deleteService
 );
 

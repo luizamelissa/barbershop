@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { getStorageData } from "../services/storage";
-import { DollarSign, Calendar, Users, Scissors, Clock } from "lucide-react";
+import { DollarSign, Calendar, Users, Scissors, Clock, Printer } from "lucide-react";
+import Button from "../components/Button";
+import { generatePDF } from "../utils/pdfGenerator";
 
 export default function BarberReports() {
   const [reportData, setReportData] = useState({
@@ -117,9 +119,16 @@ export default function BarberReports() {
 
   return (
     <div>
-      <h1 className="mb-4">Relatórios Completos</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <h1 style={{ margin: 0 }}>Relatórios Completos</h1>
+        <Button onClick={() => generatePDF("report-content", "Relatorios_Barbearia.pdf")} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <Printer size={20} />
+          Baixar Relatório
+        </Button>
+      </div>
 
-      {/* Grid Superior de Resumo */}
+      <div id="report-content" style={{ padding: "20px", backgroundColor: "var(--bg-primary)", borderRadius: "8px" }}>
+        {/* Grid Superior de Resumo */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "24px", marginBottom: "32px" }}>
         <Card style={{ borderLeft: "4px solid green" }}>
           <p style={{ color: "var(--text-secondary)", fontWeight: "bold", fontSize: "0.85rem", textTransform: "uppercase" }}>Faturamento Total (Confirmado)</p>
@@ -221,6 +230,7 @@ export default function BarberReports() {
           )}
         </Card>
 
+      </div>
       </div>
     </div>
   );

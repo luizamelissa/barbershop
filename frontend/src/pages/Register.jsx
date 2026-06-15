@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,17 +21,25 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("As senhas não coincidem!");
       return;
     }
     
-    // Save to localstorage for mock
-    localStorage.setItem("atlas_mock_user_data", JSON.stringify(formData));
-    alert("Cadastro realizado com sucesso! Faça login.");
-    navigate("/login");
+    try {
+      await register(formData);
+      alert("Cadastro realizado com sucesso! Faça login.");
+      navigate("/login");
+    } catch (error) {
+  if (error.code === "auth/email-already-in-use") {
+    alert("Esse e-mail já existe. Faça login.");
+  } else {
+    alert("Erro ao cadastrar");
+  }
+}
+
   };
 
   return (

@@ -17,22 +17,16 @@ export default function NewSchedule() {
   
   const [formData, setFormData] = useState({
     serviceId: "",
-    barberId: "",
     date: "",
     time: "",
     paymentMethod: ""
   });
-
   useEffect(() => {
     const allServices = getStorageData("atlas_services") || [];
     setServices(allServices.filter(s => s.active));
-    
-    const allBarbers = getStorageData("atlas_barbers") || [];
-    setBarbers(allBarbers.filter(b => b.active));
   }, []);
 
   const selectedService = services.find(s => s.id.toString() === formData.serviceId?.toString());
-  const selectedBarber = barbers.find(b => b.id.toString() === formData.barberId?.toString());
 
   const handleNext = () => setStep(step + 1);
   
@@ -43,10 +37,10 @@ export default function NewSchedule() {
       clientId: user.id,
       clientName: user.firstName + " " + (user.lastName || ""),
       serviceId: formData.serviceId,
-      serviceName: selectedService.name,
-      barberId: formData.barberId,
-      barberName: selectedBarber.name,
-      price: selectedService.price,
+      serviceName: selectedService?.name || "Serviço",
+      barberId: "Qualquer",
+      barberName: "Qualquer",
+      price: selectedService?.price || "0",
       date: formData.date,
       time: formData.time,
       paymentMethod: formData.paymentMethod,
@@ -80,7 +74,7 @@ export default function NewSchedule() {
         {/* Progress Bar Visual */}
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "32px", position: "relative" }}>
           <div style={{ position: "absolute", top: "12px", left: "0", right: "0", height: "2px", backgroundColor: "var(--border-color)", zIndex: 1 }}></div>
-          {[1, 2, 3, 4, 5].map(num => (
+          {[1, 2, 3, 4].map(num => (
             <div key={num} style={{ 
               width: "26px", height: "26px", borderRadius: "50%", 
               backgroundColor: step >= num ? "var(--red-accent)" : "var(--bg-primary)",
@@ -135,46 +129,6 @@ export default function NewSchedule() {
 
         {step === 2 && (
           <div>
-            <h3 className="mb-4 text-center">Escolha o Profissional</h3>
-            {barbers.length === 0 ? (
-              <p className="text-center" style={{ color: "var(--text-secondary)" }}>Nenhum profissional disponível no momento.</p>
-            ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px" }}>
-                {barbers.map(b => (
-                  <div 
-                    key={b.id} 
-                    onClick={() => setFormData({...formData, barberId: b.id})}
-                    style={{ 
-                      border: `2px solid ${formData.barberId === b.id ? 'var(--blue-dark)' : 'var(--border-color)'}`,
-                      borderRadius: "12px", padding: "16px", cursor: "pointer",
-                      backgroundColor: formData.barberId === b.id ? 'rgba(0, 61, 143, 0.05)' : 'var(--bg-surface)',
-                      transition: "all 0.2s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px"
-                    }}
-                  >
-                    <div style={{ width: "80px", height: "80px", borderRadius: "50%", backgroundColor: "var(--bg-primary)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      {b.image ? (
-                        <img src={b.image} alt={b.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      ) : (
-                        <UserIcon size={32} color="var(--text-secondary)" />
-                      )}
-                    </div>
-                    <div>
-                      <h4 style={{ margin: "0 0 4px 0", color: "var(--text-primary)" }}>{b.name}</h4>
-                      <div style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>{b.specialty || "Geral"}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "24px" }}>
-              <Button variant="secondary" onClick={() => setStep(1)}>Voltar</Button>
-              <Button onClick={handleNext} disabled={!formData.barberId}>Próximo</Button>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div>
             <h3 className="mb-4 text-center">Data e Horário</h3>
             <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
               <div style={{ flex: "1 1 200px" }}>
@@ -195,13 +149,13 @@ export default function NewSchedule() {
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: "24px" }}>
-              <Button variant="secondary" onClick={() => setStep(2)}>Voltar</Button>
+              <Button variant="secondary" onClick={() => setStep(1)}>Voltar</Button>
               <Button onClick={handleNext} disabled={!formData.date || !formData.time}>Próximo</Button>
             </div>
           </div>
         )}
 
-        {step === 4 && (
+        {step === 3 && (
           <div style={{ textAlign: "center" }}>
             <h3 className="mb-4">Pagamento</h3>
             
@@ -249,13 +203,13 @@ export default function NewSchedule() {
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button variant="secondary" onClick={() => setStep(3)}>Voltar</Button>
+              <Button variant="secondary" onClick={() => setStep(2)}>Voltar</Button>
               <Button onClick={handleNext} disabled={!formData.paymentMethod}>Confirmar Pagamento</Button>
             </div>
           </div>
         )}
 
-        {step === 5 && (
+        {step === 4 && (
           <div style={{ textAlign: "center" }}>
             <CheckCircle size={64} color="green" style={{ marginBottom: "16px" }} />
             <h3 className="mb-2">Sucesso!</h3>

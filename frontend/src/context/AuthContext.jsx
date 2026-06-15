@@ -1,70 +1,111 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { initStorage, getStorageData, setStorageData } from "../services/storage";
+import { 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    initStorage();
-    const savedUser = getStorageData("atlas_current_user");
-    if (savedUser) {
-      setUser(savedUser);
-    }
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          const userRef = doc(db, "users", firebaseUser.uid);
+          const userSnap = await getDoc(userRef);
+          
+          if (userSnap.exists()) {
+            setUser(userSnap.data());
+          } else {
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              role: 'client'
+            });
+          }
+        } catch (error) {
+          console.error("Erro ao buscar dados do usuário no Firestore:", error);
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const login = (email, password, role) => {
-    let targetUser = null;
-    
-    if (role === "admin") {
-      // Simulação simples de login admin
-      targetUser = { id: "admin-1", email, role: "admin", firstName: "Admin" };
-    } else {
-      const users = getStorageData("atlas_users") || [];
-      targetUser = users.find(u => u.email === email && u.password === password);
-      
-      // Fallback pra facilitar o mock
-      if (!targetUser && email && password) {
-        targetUser = { id: Date.now().toString(), email, role: "cliente", firstName: email.split("@")[0] };
-        setStorageData("atlas_users", [...users, targetUser]);
-      }
+  const login = async (email, password) => {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    const userRef = doc(db, "users", result.user.uid);
+    const userSnap = await getDoc(userRef);
+    return userSnap.exists() ? userSnap.data() : { role: 'client' };
+  };
+
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const firebaseUser = result.user;
+
+    const userRef = doc(db, "users", firebaseUser.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      const userData = {
+        uid: firebaseUser.uid,
+        name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+        email: firebaseUser.email,
+        photo: firebaseUser.photoURL || '',
+        role: "client",
+        createdAt: new Date().toISOString()
+      };
+      await setDoc(userRef, userData);
+      return userData;
     }
-
-    if (targetUser) {
-      setUser(targetUser);
-      setStorageData("atlas_current_user", targetUser);
-      return targetUser;
-    }
-    return null;
+    return userSnap.data();
   };
 
-  const register = (userData) => {
-    const users = getStorageData("atlas_users") || [];
-    const newUser = { ...userData, id: Date.now().toString(), role: "cliente" };
-    setStorageData("atlas_users", [...users, newUser]);
+  const register = async (userData) => {
+    const result = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+    const firebaseUser = result.user;
+
+    const newUser = {
+      uid: firebaseUser.uid,
+      name: userData.firstName + " " + userData.lastName,
+      email: firebaseUser.email,
+      phone: userData.phone || '',
+      role: "client",
+      createdAt: new Date().toISOString()
+    };
+
+    await setDoc(doc(db, "users", firebaseUser.uid), newUser);
+    return newUser;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("atlas_current_user");
+  const logout = async () => {
+    await signOut(auth);
   };
 
-  const updateProfile = (updatedData) => {
+  const updateProfile = async (updatedData) => {
+    if (!user) return;
     const newData = { ...user, ...updatedData };
     setUser(newData);
-    setStorageData("atlas_current_user", newData);
-    
-    if (user.role === "cliente") {
-      const users = getStorageData("atlas_users") || [];
-      const updatedUsers = users.map(u => u.id === user.id ? newData : u);
-      setStorageData("atlas_users", updatedUsers);
-    }
+    await setDoc(doc(db, "users", user.uid), newData, { merge: true });
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateProfile }}>
-      {children}
+    <AuthContext.Provider value={{ user, loading, login, loginWithGoogle, register, logout, updateProfile }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

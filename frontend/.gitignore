@@ -27,3 +27,6 @@ dist-ssr
 .env
 backend/.env
 frontend/.env
+
+# Firebase / Google secrets
+backend/src/config/serviceAccountKey.json

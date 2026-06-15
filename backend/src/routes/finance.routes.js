@@ -9,14 +9,14 @@ const router = Router();
 router.get(
   "/",
   verifyToken,
-  checkRole(["admin", "barber"]),
+  checkRole(["admin"]),
   financeController.getFinance
 );
 
 router.delete(
   "/:id",
   verifyToken,
-  checkRole(["admin", "barber"]),
+  checkRole(["admin"]),
   financeController.deleteFinance
 );
 

@@ -144,10 +144,11 @@ const getSchedulesReport = async (req, res) => {
   }
 };
 
-export default {
+export {
   getDashboard,
   getFinanceReport,
   getServicesReport,
   getClientsReport,
   getSchedulesReport
 };
+

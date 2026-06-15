@@ -51,7 +51,7 @@ const deleteBarber = async (req, res) => {
   }
 };
 
-export default {
+export {
   getBarbers,
   createBarber,
   updateBarber,
